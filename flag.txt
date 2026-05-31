@@ -1,0 +1,20 @@
+╔══════════════════════════════════════════════════════════════╗
+║                     CONGRATULATIONS!                         ║
+╠══════════════════════════════════════════════════════════════╣
+║                                                              ║
+║  You have successfully completed the iam_privesc_by_ec2     ║
+║  scenario by exploiting the EC2 User Data modification      ║
+║  privilege escalation technique!                             ║
+║                                                              ║
+║  FLAG: CG{us3r_d4t4_m0d1f1c4t10n_pr1v3sc_xt055mvh}    ║
+║                                                              ║
+║  Attack Path:                                                ║
+║  1. Started as dev_user with limited EC2 permissions        ║
+║  2. Discovered target EC2 with privileged role              ║
+║  3. Stopped the instance                                     ║
+║  4. Modified user data to exfiltrate credentials            ║
+║  5. Started the instance                                     ║
+║  6. Retrieved admin credentials from S3                      ║
+║  7. Used admin creds to access this flag!                   ║
+║                                                              ║
+╚══════════════════════════════════════════════════════════════╝

@@ -1,0 +1,27 @@
+# Stolen / exported credentials (do not commit)
+creds.txt
+cred.txt
+*.credentials
+*.secrets
+
+# Terraform state (contains sensitive outputs: access keys, secrets)
+terraform.tfstate
+terraform.tfstate.*
+*.tfstate
+*.tfstate.*
+
+# Terraform working directory
+.terraform/
+.terraform.lock.hcl
+
+# Local AWS / env secrets
+.env
+.env.*
+*.pem
+*.key
+id_rsa
+id_rsa.pub
+
+# Optional: local start file with credentials from terraform output
+start.txt
+user_data.b64

